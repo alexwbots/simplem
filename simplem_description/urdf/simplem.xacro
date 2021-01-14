@@ -1,0 +1,190 @@
+<?xml version="1.0" ?>
+
+<robot name="simplem" xmlns:xacro="http://ros.org/wiki/xacro">
+  
+  <!-- BGN - Include -->
+  <xacro:include filename="$(find simplem_description)/urdf/links_joints.xacro" />
+  <xacro:include filename="$(find simplem_description)/urdf/gazebo.xacro" />
+  <!-- END - Include -->
+  
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+
+  <material name="green">
+    <color rgba="0.1 0.8 0.1 1"/>
+  </material>
+
+  <xacro:property name="clongi" value="0.5" />
+  <xacro:property name="clater" value="0.4" />
+  <xacro:property name="cheight" value="0.050" /> 
+
+  <xacro:property name="wradius" value="0.062" />
+  <xacro:property name="wlength" value="0.044" /> 
+
+  <xacro:property name="caradi" value="0.02" />
+  <xacro:property name="caleng" value="0.05" /> 
+
+  <!-- BGN - Robot description -->
+
+  <link name="base_link" />
+
+  <joint name="base__base_link" type="fixed">
+    <parent link="base_link"/>
+    <child link="base"/>
+  </joint>
+
+  <link name="base">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <visual>
+      <geometry>
+        <box size="${clongi} ${clater} ${cheight}"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${clongi} ${clater} ${cheight}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="5.0" />
+      <inertia ixx="2.0" ixy="0.0" ixz="0.0" iyy="2.0" iyz="0.0" izz="2.0" />
+    </inertial>
+  </link>
+
+  <link name="fcastor_wheel">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <visual>
+      <geometry>
+        <cylinder length="${caleng}" radius="${caradi}"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${caleng}" radius="${caradi}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.05" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+    </inertial>
+  </link>
+
+  <link name="bcastor_wheel">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <visual>
+      <geometry>
+        <cylinder length="${caleng}" radius="${caradi}"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${caleng}" radius="${caradi}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.05" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+    </inertial>
+  </link>
+  
+  <joint name="base__fcastor_wheel" type="continuous">
+    <parent link="base"/>
+    <child link="fcastor_wheel"/>
+    <origin xyz="${clongi/2-0.05} 0 -0.04" rpy="1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  
+  <joint name="base__bcastor_wheel" type="continuous">
+    <parent link="base"/>
+    <child link="bcastor_wheel"/>
+    <origin xyz="-${clongi/2-0.05} 0 -0.04" rpy="1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="left_wheel">
+    <origin rpy="0 0 0" xyz="0.00 0 0.00"/>
+    <visual>
+      <geometry>
+        <cylinder length="${wlength}" radius="${wradius}"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${wlength}" radius="${wradius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.2" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+    </inertial>
+  </link>
+  
+  <joint name="wheel_left_joint" type="continuous">
+    <parent link="base"/>
+    <child link="left_wheel"/>
+    <origin xyz="0 ${clater/2+wlength} 0.0" rpy="1.5708 0 0"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+
+  <link name="right_wheel">
+    <origin rpy="0 0 0" xyz="0.00 0 0.00"/>
+    <visual>
+      <geometry>
+        <cylinder length="${wlength}" radius="${wradius}"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${wlength}" radius="${wradius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.2" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+    </inertial>
+  </link>
+  
+  <joint name="wheel_right_joint" type="continuous">
+    <parent link="base"/>
+    <child link="right_wheel"/>
+    <origin xyz="0 -${clater/2+wlength} 0.0" rpy="1.5708 0 0"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+
+  <!-- RPlaser Laser -->
+  <link name="rplidar_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.04" radius="0.05"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<cylinder length="0.04" radius="0.05"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <joint name="rplaser_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.0 0.0 ${(cheight+0.04)/2+0.05}" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="rplidar_link"/>
+  </joint>
+
+</robot>

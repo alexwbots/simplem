@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>simplem</name>
+  <version>0.0.0</version>
+  <description>The simplem metapackage</description>
+
+  <maintainer email="lopez.alexander@pucp.edu.pe">Alexander Lopez</maintainer>
+  <license>BSD</license>
+  <author email="lopez.alexander@pucp.edu.pe">Alexander Lopez</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>simplem_gazebo</exec_depend>
+  <exec_depend>simplem_description</exec_depend>
+
+  <export><metapackage/></export>
+
+</package>
